@@ -1,6 +1,13 @@
 var logs = [];
 var config = {};
 
+function enableSubmitButton(value) {
+    $("#submit").attr('disabled', value);
+}
+
+$(document).ajaxStart(enableSubmitButton.bind(null, true));
+$(document).ajaxStop(enableSubmitButton.bind(null, false));
+
 String.prototype.limit = function (limit) {
     return this.length > limit ? this.substr(0, limit) + '...' : this;
 }
@@ -69,8 +76,8 @@ String.prototype.toDDMM = function () {
 $(document).ready(function () {
 
     chrome.storage.sync.get({
-        url: 'https://jira.atlassian.net',
-        comment: 'Updated via toggl-to-jira https://chrome.google.com/webstore/detail/toggl-to-jira/anbbcnldaagfjlhbfddpjlndmjcgkdpf',
+        url: 'https://objectedge.atlassian.net',
+        comment: '',
         merge: false,
         jumpToToday: false
     }, function(items) {
