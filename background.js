@@ -8,7 +8,7 @@ console.log('Starting extension');
 var jiraUrl;
 
 chrome.storage.sync.get({
-    url: 'https://jira.atlassian.net'
+    url: 'https://objectedge.atlassian.net'
 }, function(items) {
     jiraUrl = items.url;
 });
