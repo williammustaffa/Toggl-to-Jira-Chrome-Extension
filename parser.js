@@ -155,8 +155,8 @@ function submitEntries() {
         jiraRequest.done(function (response) {
             console.log('success', response);
             $('#result-' + log.id).text('LOGGED').addClass('success');
-            $('#result-' + log.id).text('LOGGED').removeClass('warning');
-            $('#result-' + log.id).text('LOGGED').removeClass('danger');
+            $('#result-' + log.id).removeClass('warning');
+            $('#result-' + log.id).removeClass('danger');
             $('#input-' + log.id).removeAttr('checked');
             $('#input-' + log.id).addClass('hide');
             loggedSometing = true;
@@ -315,8 +315,8 @@ function renderList() {
                         diff < 4 && diff > -4
                     ) {
                         $('#result-' + log.id).text('LOGGED').addClass('success');
-                        $('#result-' + log.id).text('LOGGED').removeClass('warning');
-                        $('#result-' + log.id).text('LOGGED').removeClass('danger');
+                        $('#result-' + log.id).removeClass('warning');
+                        $('#result-' + log.id).removeClass('danger');
                         $('#input-' + log.id).removeAttr('checked');
                         $('#input-' + log.id).addClass('hide');
                         log.submit = false;
