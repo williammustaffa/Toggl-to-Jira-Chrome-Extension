@@ -10,31 +10,44 @@
     <link href="style.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-    <div class="options-panel">
-      <h3><img src="/toggl2jira_32.png" height="14"/>&nbsp;OE Brazil: Toggl 2 Jira</h3>
-      <div class="fields-wrapper">
-        <div class="field hide">
-          <label>Jira Server url <i>( e.g. <b>https://objectedge.atlassian.net</b> no trailing / slash )</i></label>
-          <input id="jira-url" style="width: 100%;"/>
+    <div id="loadingDiv" style="display: none;">
+      <div id="loadingBar" style="display: none;">
+        <div>
+          <img src="/toggl2jira_32.png"/>
         </div>
-        <div class="field field-full deny-margin-left">
-          <label>Default Log Work comment Will be added to the description using " - " as separetor.</label>
-          <input id="log-comment" style="width: 100%;"/>
+        <div>
+          <img src="ajax-loader.gif">
         </div>
       </div>
+    </div>
+    <div id="main-content">
+      <!-- Header -->
+      <div id="main-header">
+        <div id="main-header-logo"><img src="/oe_avatar.png" height="32"/></div>
+        <div id="main-header-text"><h2>Toggl 2 Jira (Settings)</h2></div>
+      </div>
+      <div class="line"><div id="status"></div></div>
+      <div class="options-panel">
         <div class="fields-wrapper">
-          <div class="field-options">
-            <label class="hide"><input type="checkbox" id="merge-entries"/>Merge Toggl Time Entries by Ticket.</label>
-            <label><input type="checkbox" id="jump-to-today"/>Always jump end date to today instead of remembering last date</label>
+          <div class="field field-full">
+            <label class="options">Default Log Work comment Will be added to the description using " - " as separetor.</label>
+            <input id="log-comment" style="width: 100%;"/>
           </div>
         </div>
-        <div class="line">
-          <button id="save">Save Changes</button>
-        </div>
-        <div class="line">&nbsp;</div>
-        <div class="line">
-          <div id="status"></div>
-        </div>
+          <div class="fields-wrapper">
+            <div class="field-options">
+              <label><input type="checkbox" id="jump-to-today"/>Always jump end date to today instead of remembering last date</label>
+            </div>
+          </div>
+          <div class="line"><button id="save">Save Changes</button></div>
+      </div>
+    </div>
+    <div class="hide">
+      <label class="hide"><input type="checkbox" id="merge-entries"/>Merge Toggl Time Entries by Ticket.</label>
+      <div class="field">
+        <label>Jira Server url <i>( e.g. <b>https://objectedge.atlassian.net</b> no trailing / slash )</i></label>
+        <input id="jira-url" style="width: 100%;"/>
+      </div>
     </div>
     <script src="options.js"></script>
   </body>

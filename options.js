@@ -12,8 +12,8 @@ function saveOptions() {
     }, function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
-        status.style = 'display: inline-block';
-        status.textContent = 'Options saved.';
+        status.style = 'display: block';
+        status.textContent = 'Settings updated!';
         setTimeout(function() {
             status.style = 'display: none';
         }, 1000);

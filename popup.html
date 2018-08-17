@@ -26,40 +26,47 @@
         </div>
       </div>
     </div>
-    <ul class="options-link">
-        <li><a href="options.html" target="_blank">Options</a></li>
-    </ul>
-    <h3><img src="/toggl2jira_32.png" height="14"/>&nbsp;OE Brazil: Toggl 2 Jira</h3>
-    <p>Log toggl entries to JIRA tasks via <strong>log work</strong></p>
-    <div class="fields-wrapper">
+    <div id="main-content">
+      <!-- Header -->
+      <div id="main-header">
+        <div id="main-header-logo"><img src="/oe_avatar.png" height="32"/></div>
+        <div id="main-header-text"><h2>Toggl 2 Jira</h2></div>
+        <ul id="main-header-options">
+            <li><a href="options.html" target="_blank" id="main-header-options-link">Settings</a></li>
+        </ul>
+      </div>
+      <!-- Content -->
+      <div class="fields-wrapper">
         <div class="field">
-            <label for="start-date">Start Date</label>
-            <input type="date" name="start-date" id="start-picker" />
+          <label for="start-date">Start Date</label>
+          <input type="date" name="start-date" id="start-picker" />
         </div>
         <div class="field">
-            <label for="end-date">End Date</label>
-            <input type="date" name="end-date" id="end-picker" />
+          <label for="end-date">End Date</label>
+          <input type="date" name="end-date" id="end-picker" />
         </div>
-    </div>
-    <br/>
-    <button id="submit" class="submit-button">Log work to JIRA</button>
-    <br/>
-    <br/>
-    <table>
-      <theader>
-          <tr>
-              <th></th>
-              <th>Issue</th>
+      </div>
+      <div class="action-button-wrapper">
+        <button id="submit" class="submit-button">Log selected toggl entries to Jira</button>
+      </div>
+      <div class="table-toggl-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ticket</th>
               <th>Comment</th>
               <th>Date</th>
               <th>Duration</th>
-              <th>Logged?</th>
-          </tr>
-      </theader>
-      <tbody id="toggle-entries">
-      </tbody>
-    </table>
-    <p id="error"></p>
-    <i>Logging repeatedly will add new time logs for the same JIRA task, instead of overwriting the old log. So log only once per Toggl entry.</i>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="toggle-entries"></tbody>
+        </table>
+      </div>
+      <div class="feedback-wrapper">
+        <p id="error">dasdsa</p>
+      </div>
+    </div>
   </body>
 </html>

@@ -131,7 +131,7 @@ $(document).ready(function () {
 });
 
 function submitEntries() {
-
+  var loggedSometing = false;
     // log time for each jira ticket
     logs.forEach(function (log) {
         if (!log.submit) return;
@@ -154,8 +154,12 @@ function submitEntries() {
 
         jiraRequest.done(function (response) {
             console.log('success', response);
-            $('#result-' + log.id).text('OK').addClass('success');
+            $('#result-' + log.id).text('LOGGED').addClass('success');
+            $('#result-' + log.id).text('LOGGED').removeClass('warning');
+            $('#result-' + log.id).text('LOGGED').removeClass('danger');
             $('#input-' + log.id).removeAttr('checked');
+            $('#input-' + log.id).addClass('hide');
+            loggedSometing = true;
         })
 
         jiraRequest.fail(function (error, message) {
@@ -165,7 +169,10 @@ function submitEntries() {
             $('p#error').text(e + "\n" + message).addClass('error');
         })
     });
-}
+    if( loggedSometing == false ){
+      $('p#error').text("Nothing to send to Jira").addClass('error');
+    }
+  }
 
 // log entry checkbox toggled
 function selectEntry() {
@@ -212,7 +219,7 @@ function fetchEntries() {
                     submit: (togglTime > 0),
                     timeSpentInt: togglTime,
                     timeSpent: togglTime > 0 ? togglTime.toString().toHHMM() : 'Running',
-                    comment: config.comment != '' ? entry.description + '-' + config.comment : entry.description,
+                    comment: config.comment != '' ? entry.description + ' - ' + config.comment : entry.description,
                     started: dateString
                 };
                 logs.push(log);
@@ -278,7 +285,7 @@ function renderList() {
         dom += '<td>' + log.comment.substr(log.issue.length).limit(35) + '</td>';
         dom += '<td>' + log.started.toDDMM() + '</td>';
         dom += '<td>' + (log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHH_MM() : 'Running') + '</td>';
-        dom += '<td  id="result-' + log.id + '"></td>';
+        dom += '<td  id="result-' + log.id + '" class="' + (log.timeSpentInt > 0 ? 'warning' : 'danger') + '">' + (log.timeSpentInt > 0 ? 'NEW' : 'Running') + '</td>';
         dom += '</tr>';
 
         totalTime += (log.timeSpentInt > 0 && log.timeSpentInt) || 0;
@@ -291,7 +298,7 @@ function renderList() {
 
     })
     // total time for displayed tickets
-    list.append('<tr><td></td><td></td><td></td><td><b>TOTAL</b></td><td>'  + totalTime.toString().toHHMM() + '</td></tr>');
+    list.append('<tr><td></td><td></td><td></td><td><b>TOTAL</b></td><td><b><i>'  + totalTime.toString().toHHMM() + '</b></i></td></tr>');
 
     // check if entry was already logged
     logs.forEach(function (log) {
@@ -307,8 +314,11 @@ function renderList() {
                         // if duration is within 4 minutes because JIRA is rounding worklog minutes :facepalm:
                         diff < 4 && diff > -4
                     ) {
-                        $('#result-' + log.id).text('OK').addClass('success');
+                        $('#result-' + log.id).text('LOGGED').addClass('success');
+                        $('#result-' + log.id).text('LOGGED').removeClass('warning');
+                        $('#result-' + log.id).text('LOGGED').removeClass('danger');
                         $('#input-' + log.id).removeAttr('checked');
+                        $('#input-' + log.id).addClass('hide');
                         log.submit = false;
                     }
                 })
