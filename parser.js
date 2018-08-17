@@ -108,12 +108,6 @@ $(document).ready(function () {
             }
         });
 
-        /*
-        var startString = localStorage.getItem('toggl-to-jira.last-date');
-        var startDate = config.jumpToToday || !startString ? new Date() : new Date(startString);
-        document.getElementById('start-picker').valueAsDate = startDate;
-        */
-
         var startString = localStorage.getItem('toggl-to-jira.last-date');
         var startDate   = !startString ? new Date() : new Date(startString);
         document.getElementById('start-picker').valueAsDate = startDate;
@@ -131,7 +125,7 @@ $(document).ready(function () {
 });
 
 function submitEntries() {
-  var loggedSometing = false;
+  //var loggedSometing = false;
     // log time for each jira ticket
     logs.forEach(function (log) {
         if (!log.submit) return;
@@ -158,8 +152,8 @@ function submitEntries() {
             $('#result-' + log.id).removeClass('warning');
             $('#result-' + log.id).removeClass('danger');
             $('#input-' + log.id).removeAttr('checked');
-            $('#input-' + log.id).addClass('hide');
-            loggedSometing = true;
+            //$('#input-' + log.id).addClass('hide');
+            //loggedSometing = true;
         })
 
         jiraRequest.fail(function (error, message) {
@@ -170,7 +164,7 @@ function submitEntries() {
         })
     });
     if( loggedSometing == false ){
-      $('p#error').text("Nothing to send to Jira").addClass('error');
+      //$('p#error').text("Nothing to send to Jira").addClass('error');
     }
   }
 
@@ -215,11 +209,11 @@ function fetchEntries() {
                 log = {
                     id: entry.id.toString(),
                     issue: issue,
-                    description: entry.description,
+                    description: entry.description.substr(issue.length),
                     submit: (togglTime > 0),
                     timeSpentInt: togglTime,
                     timeSpent: togglTime > 0 ? togglTime.toString().toHHMM() : 'Running',
-                    comment: config.comment != '' ? entry.description + ' - ' + config.comment : entry.description,
+                    comment: config.comment != '' ? entry.description.substr(issue.length) + ' - ' + config.comment : entry.description.substr(issue.length),
                     started: dateString
                 };
                 logs.push(log);
@@ -282,7 +276,7 @@ function renderList() {
         // link to jira ticket
         dom += '<td><a href="' + url + '" target="_blank">' + log.issue + '</a></td>';
 
-        dom += '<td>' + log.comment.substr(log.issue.length).limit(35) + '</td>';
+        dom += '<td>' + log.comment.limit(35) + '</td>';
         dom += '<td>' + log.started.toDDMM() + '</td>';
         dom += '<td>' + (log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHH_MM() : 'Running') + '</td>';
         dom += '<td  id="result-' + log.id + '" class="' + (log.timeSpentInt > 0 ? 'warning' : 'danger') + '">' + (log.timeSpentInt > 0 ? 'NEW' : 'Running') + '</td>';
@@ -318,7 +312,7 @@ function renderList() {
                         $('#result-' + log.id).removeClass('warning');
                         $('#result-' + log.id).removeClass('danger');
                         $('#input-' + log.id).removeAttr('checked');
-                        $('#input-' + log.id).addClass('hide');
+                        //$('#input-' + log.id).addClass('hide');
                         log.submit = false;
                     }
                 })
