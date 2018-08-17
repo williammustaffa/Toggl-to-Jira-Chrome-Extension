@@ -12,10 +12,11 @@ function saveOptions() {
     }, function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
+        status.style = 'display: inline-block';
         status.textContent = 'Options saved.';
         setTimeout(function() {
-            status.textContent = '';
-        }, 750);
+            status.style = 'display: none';
+        }, 1000);
     });
 }
 
@@ -24,8 +25,8 @@ function saveOptions() {
 function restoreOptions() {
     // Use default values
     chrome.storage.sync.get({
-        url: 'https://jira.atlassian.net',
-        comment: 'Updated via toggl-to-jira https://chrome.google.com/webstore/detail/toggl-to-jira/anbbcnldaagfjlhbfddpjlndmjcgkdpf',
+        url: 'https://objectedge.atlassian.net',
+        comment: '',
         merge: false,
         jumpToToday: false
     }, function(items) {

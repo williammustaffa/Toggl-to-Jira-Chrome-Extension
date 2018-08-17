@@ -1,6 +1,7 @@
 /*
  *  Copyright (c) 2016 Frank Trigub. All rights reserved.*
     frankyyyy at live com
+ *  Object Edge Brazil adaptation by William Lima and Giuliano Riboni
 */
 
 console.log('Starting extension');
@@ -8,7 +9,7 @@ console.log('Starting extension');
 var jiraUrl;
 
 chrome.storage.sync.get({
-    url: 'https://jira.atlassian.net'
+    url: 'https://objectedge.atlassian.net'
 }, function(items) {
     jiraUrl = items.url;
 });

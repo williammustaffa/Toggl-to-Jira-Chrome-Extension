@@ -13,36 +13,53 @@ td {
     padding: 2px 0px;
     text-align: center;
 }
+
 td:nth-of-type(3) {
   text-align: left;
 }
+
 #status {
-    color: #11dda9;
+    display: none;
+    border-radius: 3px;
+    color: white;
+    background: #1dd1a1;
+    margin: 5px 0;
+    padding: 7px 10px;
 }
-td.success {
+
+td > a, td.success {
+    color: white;
     background-color: #1987ac;
-    color: white;
-    font-weight: bold;
-    text-align: center;
+    border-radius: 3px;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 1px 2px;
 }
-td > a {
-  white-space: nowrap;
-}
-p.error {
-    padding: 1em;
-    background-color: #cc3329;
+
+td.success {
+    background-color: #1dd1a1;
     color: white;
-    font-weight: bold;
     text-align: center;
 }
 
+p.error {
+    color: white;
+    background: #cc3329;
+    border-radius: 3px;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 1px 2px;
+}
+
 button {
-    border-radius: 1px;
+    -webkit-appearance: none;
+    background-color: #1987ac;
+    border-radius: 3px;
     font-family: "Open Sans",Arial,sans-serif;
     font-size: 14px;
     border: 1px solid transparent;
     margin: 0;
-    padding: 7px 5px;
+    padding: 7px 10px;
     position: relative;
     text-align: center;
     text-decoration: none;
@@ -51,49 +68,124 @@ button {
     -webkit-transition: all .1s;
     transition: all .1s;
     font-size: 11px;
-    color: #929292;
+    color: white;
     margin-top: 5px;
     font-weight: 600;
-
-    background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#f5f5f5),color-stop(100%,#eee));
-    background-image: -moz-linear-gradient(#f5f5f5,#eee);
-    background-image: -webkit-linear-gradient(#f5f5f5,#eee);
-    background-image: linear-gradient(#f5f5f5,#eee);;
-
     width: auto;
     cursor: pointer;
     display: inline-block;
 }
 
 button#submit {
+    -webkit-appearance: none;
     background-color: #1987ac;
-    background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#5195d4),color-stop(100%,#1987ac));
-    background-image: -moz-linear-gradient(#5195d4,#1987ac);
-    background-image: -webkit-linear-gradient(#5195d4,#1987ac);
-    background-image: linear-gradient(#5195d4,#1987ac);
     color: white;
+}
+
+button#submit:hover {
+    -webkit-appearance: none;
+    background-color: #0c556d;
+    color: white;
+}
+
+button#submit:disabled {
+    opacity: 0.5;
 }
 
 i {
     font-size: 80%;
 }
 
-button:hover {
-
-    background-size: 100%;
-    background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#f5f5f5),color-stop(100%,#eee));
-    background-image: -moz-linear-gradient(#f5f5f5,#eee);
-    background-image: -webkit-linear-gradient(#f5f5f5,#eee);
-    background-image: linear-gradient(#f5f5f5,#eee);
-    border-color: #e6e6e6;
-    -moz-box-shadow: inset 0 -1px 0 #e6e6e6;
-    -webkit-box-shadow: inset 0 -1px 0 #e6e6e6;
-    box-shadow: inset 0 -1px 0 #e6e6e6;
-    color: #595959;
-
+.fields-wrapper {
+    border: none;
+    background-color: #f5f5f5;
+    display: flex;
+    border-radius: 3px;
 }
 
-fieldset {
-    border: none;
-    background-color: #eee;
+.field {
+    width: 50%;
+    margin: 10px;
+}
+
+.field-full{
+  width: 100% !important;
+}
+
+.field-options label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.field label {
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0 0 5px;
+}
+
+.field input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+
+.options-panel {
+    padding: 10px 20px;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    border-radius: 3px;
+    flex-direction: column;
+}
+
+.hide{
+  display: none !important;
+}
+
+.deny-margin-left{
+  margin-left: 0px !important;
+}
+
+.submit-button{
+  width: 500px;
+}
+
+.options-link{
+  float:      right;
+  list-style: none;
+  margin-top: 0px !important;
+}
+
+#loadingDiv{
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6);
+  position:   fixed;
+  top:        0;
+  left:       0;
+  width:      100%;
+  height:     100%;
+  z-index:    999999;
+  display:    block;
+}
+
+#loadingBar{
+  position:         absolute;
+  left:             50%;
+  top:              200px;
+  width:            115px;
+  margin-left:      -83px;
+  color:            #FFFFFF;
+  padding:          4px 10px 4px 10px;
+  border-radius:    10px 10px 10px 10px;
+  margin-top:       0;
+  font-weight:      bold;
+  background-color: #111111;
+  font-size:        10px;
+  text-shadow:      0 1px 0 #252525;
+  text-align:       center;
+  border-bottom:    1px solid #252525;
 }

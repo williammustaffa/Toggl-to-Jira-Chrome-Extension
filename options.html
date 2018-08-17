@@ -1,37 +1,41 @@
 <!DOCTYPE html>
+<!--
+ *  Copyright (c) 2016 Frank Trigub. All rights reserved.*
+    frankyyyy at live com
+ *  Object Edge Brazil adaptation by William Lima and Giuliano Riboni
+-->
 <html>
-
-<head>
-    <title>Toggl 2 Jira Options</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-    <i style="float: right;"><a href="https://www.patreon.com/fryyyy?ty=h" target="_blank">support me</a></i>
-
-    <label>Jira Server url</label> <i>( e.g. <b>https://jira.atlassian.net</b> no trailing / slash )</i>
-    <input id="jira-url" style="width: 100%;"/>
-
-    <br/>
-    <br/>
-    <label>Log Work comment sent with every log</label>
-    <input id="log-comment" style="width: 100%;"/>
-    <br/>
-    <br/>
-    <input type="checkbox" id="merge-entries"/>
-    <label>Merge Toggl Time Entries by Ticket</label>
-    <br/>
-    <br/>
-    <input type="checkbox" id="jump-to-today"/>
-    <label>Always jump to today instead of remembering last logged date</label>
-
-    <br/>
-    <br/>
-
-    <div id="status"></div>
-    <button id="save">Save</button>
-
-    <script src="options.js"> </script>
-</body>
-
+  <head>
+    <title>OE Brazil: Toggl 2 Jira</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+    <div class="options-panel">
+      <h3><img src="/toggl2jira_32.png" height="14"/>&nbsp;OE Brazil: Toggl 2 Jira</h3>
+      <div class="fields-wrapper">
+        <div class="field hide">
+          <label>Jira Server url <i>( e.g. <b>https://objectedge.atlassian.net</b> no trailing / slash )</i></label>
+          <input id="jira-url" style="width: 100%;"/>
+        </div>
+        <div class="field field-full deny-margin-left">
+          <label>Default Log Work comment Will be added to the description using " - " as separetor.</label>
+          <input id="log-comment" style="width: 100%;"/>
+        </div>
+      </div>
+        <div class="fields-wrapper">
+          <div class="field-options">
+            <label class="hide"><input type="checkbox" id="merge-entries"/>Merge Toggl Time Entries by Ticket.</label>
+            <label><input type="checkbox" id="jump-to-today"/>Always jump end date to today instead of remembering last date</label>
+          </div>
+        </div>
+        <div class="line">
+          <button id="save">Save Changes</button>
+        </div>
+        <div class="line">&nbsp;</div>
+        <div class="line">
+          <div id="status"></div>
+        </div>
+    </div>
+    <script src="options.js"></script>
+  </body>
 </html>

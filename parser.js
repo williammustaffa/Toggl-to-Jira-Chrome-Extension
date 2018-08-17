@@ -1,6 +1,25 @@
 var logs = [];
 var config = {};
 
+function makeLoading(show){
+  $('#loadingBar').show();
+  if( show == true ){
+    $('#loadingDiv').show();
+    $("#submit").attr('disabled', show);
+  }else{
+    $('#loadingDiv').hide();
+    enableSubmitButton();
+  }
+  return true;
+}
+
+function enableSubmitButton() {
+  $("#submit").attr('disabled', false);
+}
+
+$(document).ajaxStart(makeLoading.bind(null, true));
+$(document).ajaxStop(makeLoading.bind(null, false));
+
 String.prototype.limit = function (limit) {
     return this.length > limit ? this.substr(0, limit) + '...' : this;
 }
@@ -69,8 +88,8 @@ String.prototype.toDDMM = function () {
 $(document).ready(function () {
 
     chrome.storage.sync.get({
-        url: 'https://jira.atlassian.net',
-        comment: 'Updated via toggl-to-jira https://chrome.google.com/webstore/detail/toggl-to-jira/anbbcnldaagfjlhbfddpjlndmjcgkdpf',
+        url: 'https://objectedge.atlassian.net',
+        comment: '',
         merge: false,
         jumpToToday: false
     }, function(items) {
@@ -89,8 +108,14 @@ $(document).ready(function () {
             }
         });
 
+        /*
         var startString = localStorage.getItem('toggl-to-jira.last-date');
         var startDate = config.jumpToToday || !startString ? new Date() : new Date(startString);
+        document.getElementById('start-picker').valueAsDate = startDate;
+        */
+
+        var startString = localStorage.getItem('toggl-to-jira.last-date');
+        var startDate   = !startString ? new Date() : new Date(startString);
         document.getElementById('start-picker').valueAsDate = startDate;
 
         var endString = localStorage.getItem('toggl-to-jira.last-end-date');
@@ -117,17 +142,28 @@ function submitEntries() {
             started: log.started
         });
 
-        $.post(config.url + '/rest/api/latest/issue/' + log.issue + '/worklog', body,
-            function success(response) {
-                console.log('success', response);
-                $('#result-' + log.id).text('OK').addClass('success');
-                $('#input-' + log.id).removeAttr('checked');
-            }).fail(function error(error, message) {
-                console.log(error, message);
-                var e = error.responseText || JSON.stringify(error);
-                console.log(e);
-                $('p#error').text(e + "\n" + message).addClass('error');
-            })
+        var jiraRequest = $.ajax({
+            url: config.url + '/rest/api/latest/issue/' + log.issue + '/worklog',
+            method: 'POST',
+            data: body,
+            crossDomain: true,
+            headers: {
+                "X-Atlassian-Token": "nocheck",
+            }
+        });
+
+        jiraRequest.done(function (response) {
+            console.log('success', response);
+            $('#result-' + log.id).text('OK').addClass('success');
+            $('#input-' + log.id).removeAttr('checked');
+        })
+
+        jiraRequest.fail(function (error, message) {
+            console.log(error, message);
+            var e = error.responseText || JSON.stringify(error);
+            console.log(e);
+            $('p#error').text(e + "\n" + message).addClass('error');
+        })
     });
 }
 
@@ -144,34 +180,30 @@ function selectEntry() {
 
 function fetchEntries() {
     var startDate = document.getElementById('start-picker').valueAsDate.toISOString();
-    var endDate = document.getElementById('end-picker').valueAsDate.toISOString();
+    var endDate   = document.getElementById('end-picker').valueAsDate.toISOString();
     localStorage.setItem('toggl-to-jira.last-date', startDate);
     localStorage.setItem('toggl-to-jira.last-end-date', endDate);
     $('p#error').text("").removeClass('error');
-
+    //Make the query into Toggl;
     var dateQuery = '?start_date=' + startDate + '&end_date=' + endDate;
-
     $.get('https://www.toggl.com/api/v8/time_entries' + dateQuery, function (entries) {
         console.log('entries', entries);
         logs = [];
         entries.reverse();
-
+        //Read each entry;
         entries.forEach(function (entry) {
             entry.description = entry.description || 'no-description';
             var issue = entry.description.split(' ')[0];
             var togglTime = entry.duration;
             console.log(togglTime);
-
             var dateString = toJiraWhateverDateTime(entry.start);
-
             var log = _.find(logs, function (log) {
                 return log.issue === issue;
             });
-
-            // merge toggl entries by ticket ?
+            //Merge toggl entries by ticket?
             if (log && config.merge) {
                 log.timeSpentInt = log.timeSpentInt + togglTime;
-                log.timeSpent = log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHHMM() : 'still running...';
+                log.timeSpent = log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHHMM() : 'Running';
             } else {
                 log = {
                     id: entry.id.toString(),
@@ -179,21 +211,19 @@ function fetchEntries() {
                     description: entry.description,
                     submit: (togglTime > 0),
                     timeSpentInt: togglTime,
-                    timeSpent: togglTime > 0 ? togglTime.toString().toHHMM() : 'still running...',
-                    comment: config.comment,
+                    timeSpent: togglTime > 0 ? togglTime.toString().toHHMM() : 'Running',
+                    comment: config.comment != '' ? entry.description + '-' + config.comment : entry.description,
                     started: dateString
                 };
-
                 logs.push(log);
             }
         });
-
         renderList();
     });
 }
 
 function toJiraWhateverDateTime(date) {
-    // TOGGL:           at: "2016-03-14T11:02:55+00:00"
+    // TOGGL:          at: "2016-03-14T11:02:55+00:00"
     // JIRA:    "started": "2012-02-15T17:34:37.937-0600"
 
     // toggl time should look like jira time (otherwise 500 Server Error is raised)
@@ -245,9 +275,9 @@ function renderList() {
         // link to jira ticket
         dom += '<td><a href="' + url + '" target="_blank">' + log.issue + '</a></td>';
 
-        dom += '<td>' + log.description.substr(log.issue.length).limit(35) + '</td>';
+        dom += '<td>' + log.comment.substr(log.issue.length).limit(35) + '</td>';
         dom += '<td>' + log.started.toDDMM() + '</td>';
-        dom += '<td>' + (log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHH_MM() : 'still running...') + '</td>';
+        dom += '<td>' + (log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHH_MM() : 'Running') + '</td>';
         dom += '<td  id="result-' + log.id + '"></td>';
         dom += '</tr>';
 
@@ -284,5 +314,5 @@ function renderList() {
                 })
             });
     });
-
+    
 }
