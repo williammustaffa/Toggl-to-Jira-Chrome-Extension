@@ -405,6 +405,7 @@ function renderList() {
   });
   //Check if entry was already logged;
   logs.forEach(function (log) {
+    //Still need to add a fallback here;
     $.get(config.url + '/rest/api/latest/issue/' + log.issue + '/worklog',
       function success(response) {
         var worklogs = response.worklogs;
@@ -425,6 +426,13 @@ function renderList() {
           log.submit = false;
         }
       })
+    }).fail(function() {
+      $('#result-' + log.id).text('ERROR').addClass('danger');
+      $('#result-' + log.id).removeClass('warning');
+      $('#result-' + log.id).removeClass('success');
+      $('#input-' + log.id).removeAttr('checked');
+      $('#input-' + log.id).attr('data-log-submit', false);
+      addError( 'Error loading logs from jira, please try again later.' );
     });
   });
 }
