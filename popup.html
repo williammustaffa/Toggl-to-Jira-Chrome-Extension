@@ -16,10 +16,10 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <div id="loadingDiv" style="display: none;">
-      <div id="loadingBar" style="display: none;">
+    <div id="loadingDiv">
+      <div id="loadingBar">
         <div>
-          <img src="/toggl2jira_32.png"/>
+          <img src="/oe_avatar.png" height="32" class="loadingDiv-logo"/>
         </div>
         <div>
           <img src="ajax-loader.gif">
@@ -35,6 +35,10 @@
             <li><a href="options.html" target="_blank" id="main-header-options-link">Settings</a></li>
         </ul>
       </div>
+      <!-- Feedback -->
+      <div class="feedback-wrapper">
+        <p id="error"></p>
+      </div>
       <!-- Content -->
       <div class="fields-wrapper">
         <div class="field">
@@ -47,15 +51,15 @@
         </div>
       </div>
       <div class="action-button-wrapper">
-        <button id="submit" class="submit-button">Log selected toggl entries to Jira</button>
+        <button id="submit" class="submit-button">Click Here To add selected toggl entries to Jira</button>
       </div>
       <div class="table-toggl-wrapper">
         <table>
           <thead>
             <tr>
-              <th>#</th>
+              <th><a href="#" id="select-all-link" title="Select All New Entries" onClick="return selectAll();">#</a></th>
               <th>Ticket</th>
-              <th>Comment</th>
+              <th class="text-left">Comment</th>
               <th>Date</th>
               <th>Duration</th>
               <th>Status</th>
@@ -63,9 +67,6 @@
           </thead>
           <tbody id="toggle-entries"></tbody>
         </table>
-      </div>
-      <div class="feedback-wrapper">
-        <p id="error">dasdsa</p>
       </div>
     </div>
   </body>

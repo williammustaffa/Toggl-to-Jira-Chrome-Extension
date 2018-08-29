@@ -13,7 +13,7 @@
     <div id="loadingDiv" style="display: none;">
       <div id="loadingBar" style="display: none;">
         <div>
-          <img src="/toggl2jira_32.png"/>
+          <img src="/oe_avatar.png" height="32" class="loadingDiv-logo"/>
         </div>
         <div>
           <img src="ajax-loader.gif">
@@ -34,12 +34,24 @@
             <input id="log-comment" style="width: 100%;"/>
           </div>
         </div>
-          <div class="fields-wrapper">
-            <div class="field-options">
-              <label><input type="checkbox" id="jump-to-today"/>Always jump end date to today instead of remembering last date</label>
-            </div>
+        <div class="fields-wrapper">
+          <div class="field field-full">
+            <label class="options">Text to be removed from all comments (In case you use some code that you don't need on the comments)</label>
+            <input id="log-comment-replace" style="width: 100%;"/>
           </div>
-          <div class="line"><button id="save">Save Changes</button></div>
+        </div>
+        <div class="fields-wrapper">
+          <div class="field-options">
+            <label><input type="checkbox" id="jump-to-today"/><b>&nbsp;Always jump end date to today instead of remembering last date</b></label>
+          </div>
+        </div>
+        <div class="fields-wrapper">
+          <div class="field-options">
+            <label><input type="checkbox" id="show-day-total"/><b>&nbsp;Sum total hours on each day</b></label>
+          </div>
+        </div>
+        <div class="line"><button id="save">Save Changes</button></div>
+        <div class="line version"><span>V: 18.0.0 <i>(2018-08-29)</i><span></div>
       </div>
     </div>
     <div class="hide">

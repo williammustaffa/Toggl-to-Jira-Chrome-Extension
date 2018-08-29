@@ -1,9 +1,8 @@
 /* BODY */
 body{
-    font-family:            "Open Sans", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    min-width:              600px;
-    background-color:       #F7941E;
+  font-family:      "Open Sans", Arial, sans-serif;
+  min-width:        600px;
+  background-color: #F7941E;
 }
 
 /* SHELL */
@@ -11,7 +10,7 @@ body{
   padding:          10px;
   background-color: #1C75BC;
   overflow:         auto;
-  max-height:       570px;
+  max-height:       560px;
 }
 
 /* LOADING */
@@ -26,6 +25,10 @@ body{
   display:    block;
 }
 
+.loadingDiv-logo{
+  margin-bottom: 10px;
+}
+
 #loadingBar{
   position:         absolute;
   left:             50%;
@@ -33,7 +36,7 @@ body{
   width:            115px;
   margin-left:      -83px;
   color:            #FFFFFF;
-  padding:          4px 10px 4px 10px;
+  padding:          10px;
   border-radius:    10px 10px 10px 10px;
   margin-top:       0;
   font-weight:      bold;
@@ -63,6 +66,14 @@ body{
 
 .deny-margin-right{
   margin-right: 0px !important;
+}
+
+.text-right{
+  text-align: right !important;
+}
+
+.text-left{
+  text-align: left !important;
 }
 
 /* HEADER */
@@ -192,8 +203,20 @@ thead{
   background: #1267ab;
 }
 
+.table-total{
+  background: #2087da;
+}
+
+.table-footer{
+  background: #1267ab;
+}
+
 tr{
   height: 22px;
+}
+
+tr:hover{
+  background: #25537d;
 }
 
 td{
@@ -256,6 +279,22 @@ p.error{
   white-space:     nowrap;
   text-decoration: none;
   padding:         10px;
+  text-transform:  uppercase;
+}
+
+.invalid-key{
+  color:      #b10707;
+  font-style: italic;
+  background: #317cc3;
+}
+
+.already-logged{
+  opacity: 0.5;
+}
+
+#select-all-link{
+  color:           #FFF;
+  text-decoration: none;
 }
 
 /* OPTIONS */
@@ -284,4 +323,11 @@ p.error{
 
 .field label.options{
   text-align: left;
+}
+
+.version{
+  text-align:    right;
+  color:         #FFF;
+  font-style:    italic;
+  padding-right: 5px;
 }

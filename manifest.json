@@ -1,7 +1,7 @@
 {
-    "name": "OE Brazil: Toggl to Jira",
+    "name": "OE Brazil: Toggl 2 Jira",
     "description": "Logs Toggl.com time entries via *log work* to corresponding Jira tasks",
-    "version": "1.0.0",
+    "version": "18.0.0",
     "permissions": [
         "storage",
         "tabs",
@@ -20,7 +20,7 @@
         "page": "background.html"
     },
     "browser_action": {
-        "default_title": "Log Toggl.com entries to Jira",
+        "default_title": "OE Brazil: Toggl 2 Jira",
         "default_popup": "popup.html"
     },
     "options_page": "options.html",

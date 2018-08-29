@@ -1,22 +1,26 @@
 // Saves options to chrome.storage
 function saveOptions() {
-    var url = document.getElementById('jira-url').value;
-    var comment = document.getElementById('log-comment').value;
-    var merge = document.getElementById('merge-entries').checked;
-    var jumpToToday = document.getElementById('jump-to-today').checked;
+    var url            = document.getElementById('jira-url').value;
+    var comment        = document.getElementById('log-comment').value;
+    var commentReplace = document.getElementById('log-comment-replace').value;
+    var merge          = document.getElementById('merge-entries').checked;
+    var jumpToToday    = document.getElementById('jump-to-today').checked;
+    var showDayTotal   = document.getElementById('show-day-total').checked;
     chrome.storage.sync.set({
         url: url,
         comment: comment,
+        commentReplace: commentReplace,
         merge: merge,
-        jumpToToday: jumpToToday
+        jumpToToday: jumpToToday,
+        showDayTotal: showDayTotal
     }, function() {
         // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.style = 'display: block';
-        status.textContent = 'Settings updated!';
+        var status         = document.getElementById('status');
+        status.style       = 'display: block';
+        status.textContent = 'SETTINGS UPDATED';
         setTimeout(function() {
             status.style = 'display: none';
-        }, 1000);
+        }, 5000);
     });
 }
 
@@ -27,13 +31,17 @@ function restoreOptions() {
     chrome.storage.sync.get({
         url: 'https://objectedge.atlassian.net',
         comment: '',
+        commentReplace: '',
         merge: false,
-        jumpToToday: false
+        jumpToToday: false,
+        showDayTotal: true
     }, function(items) {
-        document.getElementById('jira-url').value = items.url;
-        document.getElementById('log-comment').value = items.comment;
-        document.getElementById('merge-entries').checked = items.merge;
-        document.getElementById('jump-to-today').checked = items.jumpToToday;
+        document.getElementById('jira-url').value            = items.url;
+        document.getElementById('log-comment').value         = items.comment;
+        document.getElementById('log-comment-replace').value = items.commentReplace;
+        document.getElementById('merge-entries').checked     = items.merge;
+        document.getElementById('jump-to-today').checked     = items.jumpToToday;
+        document.getElementById('show-day-total').checked    = items.showDayTotal;
     });
 }
 
