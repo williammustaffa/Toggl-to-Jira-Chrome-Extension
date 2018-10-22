@@ -1,6 +1,7 @@
 // Saves options to chrome.storage
 function saveOptions() {
     var url            = document.getElementById('jira-url').value;
+    var togglApyKey    = document.getElementById('toggl-api-key').value;
     var comment        = document.getElementById('log-comment').value;
     var commentReplace = document.getElementById('log-comment-replace').value;
     var merge          = document.getElementById('merge-entries').checked;
@@ -8,6 +9,7 @@ function saveOptions() {
     var showDayTotal   = document.getElementById('show-day-total').checked;
     chrome.storage.sync.set({
         url: url,
+        togglApyKey: togglApyKey,
         comment: comment,
         commentReplace: commentReplace,
         merge: merge,
@@ -30,6 +32,7 @@ function restoreOptions() {
     // Use default values
     chrome.storage.sync.get({
         url: 'https://objectedge.atlassian.net',
+        togglApyKey: '',
         comment: '',
         commentReplace: '',
         merge: false,
@@ -37,6 +40,7 @@ function restoreOptions() {
         showDayTotal: true
     }, function(items) {
         document.getElementById('jira-url').value            = items.url;
+        document.getElementById('toggl-api-key').value       = items.togglApyKey;
         document.getElementById('log-comment').value         = items.comment;
         document.getElementById('log-comment-replace').value = items.commentReplace;
         document.getElementById('merge-entries').checked     = items.merge;

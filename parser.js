@@ -83,6 +83,7 @@ String.prototype.toDDMM = function () {
 
 function addError(message){
   $('p#error').text( message ).addClass('error');
+  makeLoading( false );
   setTimeout(function() {
       clearError();
   }, 5000);
@@ -214,57 +215,78 @@ function fetchEntries() {
   localStorage.setItem('toggl-to-jira.last-end-date', endDate);
   //Make the query into Toggl;
   var dateQuery = '?start_date=' + startDate + '&end_date=' + endDate;
-  $.get('https://www.toggl.com/api/v8/time_entries' + dateQuery, function (entries) {
-    logs = [];
-    entries.reverse();
-    //Read each entry;
-    entries.forEach(function (entry) {
-      entry.description = entry.description || 'No description';
-      var issue = entry.description.split(' ')[0];
-      var togglTime = entry.duration;
-      var dateString = toJiraWhateverDateTime(entry.start);
-      var log = _.find(logs, function (log) {
-        return log.issue === issue;
+  //Get the api key;
+  chrome.storage.sync.get({
+    togglApyKey: ''
+  }, function(items) {
+    togglApiKey = items.togglApyKey;
+    if( togglApiKey != '' ){
+      var togglRequest = $.ajax({
+        url: 'https://www.toggl.com/api/v8/time_entries' + dateQuery,
+        method: "GET",
+        contentType: "application/json",
+        beforeSend: function( xhr ) {
+          xhr.setRequestHeader ("Authorization", "Basic " + btoa(togglApiKey + ":api_token"));
+        }
       });
-      //Merge toggl entries by ticket?
-      if (log && config.merge) {
-        log.timeSpentInt = log.timeSpentInt + togglTime;
-        log.timeSpent = log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHHMM() : 'Running';
-      } else {
-        rawComment = entry.description.substr(issue.length);
-        //Replace string if needed;
-        if( config.commentReplace != '' ){
-          rawComment = rawComment.replace(config.commentReplace, '');
-        }
-        //Trim string;
-        rawComment = rawComment.trim();
-        if( config.comment != '' ){
-          if( rawComment != '' ){
-            logComment = rawComment + ' - ' + config.comment;
-          }else{
-            logComment =  config.comment;
+      togglRequest.fail(function( jqXHR, textStatus ) {
+        addError( 'Error on Toggl request, check your Toggl API Key.' );
+      });
+      togglRequest.done(function( entries ) {
+        logs = [];
+        entries.reverse();
+        //Read each entry;
+        entries.forEach(function (entry) {
+          entry.description = entry.description || 'No description';
+          var issue = entry.description.split(' ')[0];
+          var togglTime = entry.duration;
+          var dateString = toJiraWhateverDateTime(entry.start);
+          var log = _.find(logs, function (log) {
+            return log.issue === issue;
+          });
+          //Merge toggl entries by ticket?
+          if (log && config.merge) {
+            log.timeSpentInt = log.timeSpentInt + togglTime;
+            log.timeSpent = log.timeSpentInt > 0 ? log.timeSpentInt.toString().toHHMM() : 'Running';
+          } else {
+            rawComment = entry.description.substr(issue.length);
+            //Replace string if needed;
+            if( config.commentReplace != '' ){
+              rawComment = rawComment.replace(config.commentReplace, '');
+            }
+            //Trim string;
+            rawComment = rawComment.trim();
+            if( config.comment != '' ){
+              if( rawComment != '' ){
+                logComment = rawComment + ' - ' + config.comment;
+              }else{
+                logComment =  config.comment;
+              }
+            }else{
+              if( rawComment != '' ){
+                logComment = rawComment;
+              }else{
+                logComment = 'No description';
+              }
+            }
+            log = {
+              id: entry.id.toString(),
+              issue: issue,
+              description: entry.description.substr(issue.length),
+              submit: (togglTime > 0),
+              timeSpentInt: togglTime,
+              timeSpent: togglTime > 0 ? togglTime.toString().toHHMM() : 'Running',
+              comment: logComment,
+              started: dateString
+            };
+            logs.push(log);
           }
-        }else{
-          if( rawComment != '' ){
-            logComment = rawComment;
-          }else{
-            logComment = 'No description';
-          }
-        }
-        log = {
-          id: entry.id.toString(),
-          issue: issue,
-          description: entry.description.substr(issue.length),
-          submit: (togglTime > 0),
-          timeSpentInt: togglTime,
-          timeSpent: togglTime > 0 ? togglTime.toString().toHHMM() : 'Running',
-          comment: logComment,
-          started: dateString
-        };
-        logs.push(log);
-      }
-    });
-    renderList();
+        });
+        renderList();
+      });
+    }else{
+      addError( 'No Toggl API Key found.' );
+    }
   });
 }
 
