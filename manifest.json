@@ -1,7 +1,7 @@
 {
     "name": "OE Brazil: Toggl 2 Jira",
     "description": "Logs Toggl.com time entries via *log work* to corresponding Jira tasks",
-    "version": "18.2.1",
+    "version": "18.3.2",
     "permissions": [
         "storage",
         "tabs",

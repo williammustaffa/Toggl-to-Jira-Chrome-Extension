@@ -298,6 +298,12 @@ p.error{
 }
 
 /* OPTIONS */
+#main-content-options{
+  padding:          10px;
+  background-color: #1C75BC;
+  overflow:         auto;
+}
+
 .field-full{
   width: 100% !important;
 }
@@ -330,4 +336,8 @@ p.error{
   color:         #FFF;
   font-style:    italic;
   padding-right: 5px;
+}
+
+.header{
+  color: #FFF;
 }

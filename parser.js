@@ -141,7 +141,7 @@ function submitEntries() {
     }
   });
   if( !hasChecked ){
-    addError( 'No Toggl Entry Selected.' );
+    addError( 'No Toggl entry selected.' );
   }else{
     clearError();
     // log time for each jira ticket
@@ -202,7 +202,7 @@ function selectAll(){
     }
   });
   if( !hasChecked ){
-    addError( 'No Toggl Entry Selected.' );
+    addError( 'No Toggl entry selected.' );
   }
   return false;
 }
@@ -230,7 +230,7 @@ function fetchEntries() {
         }
       });
       togglRequest.fail(function( jqXHR, textStatus ) {
-        addError( 'Error on Toggl request, check your Toggl API Key.' );
+        addError( 'Error on Toggl request, check your Toggl API key.' );
       });
       togglRequest.done(function( entries ) {
         logs = [];
@@ -285,7 +285,7 @@ function fetchEntries() {
         renderList();
       });
     }else{
-      addError( 'No Toggl API Key found.' );
+      addError( 'No Toggl API key found.' );
     }
   });
 }
@@ -425,36 +425,54 @@ function renderList() {
       $(this).click();
     }
   });
-  //Check if entry was already logged;
-  logs.forEach(function (log) {
-    //Still need to add a fallback here;
-    $.get(config.url + '/rest/api/latest/issue/' + log.issue + '/worklog',
-      function success(response) {
-        var worklogs = response.worklogs;
-        worklogs.forEach(function (worklog) {
-          var diff = Math.floor(worklog.timeSpentSeconds / 60) - Math.floor(log.timeSpentInt / 60);
-          if (
-            // if date and month matches
-            worklog.started.toDDMM() === log.started.toDDMM() &&
-            // if duration is within 4 minutes because JIRA is rounding worklog minutes :facepalm:
-            diff < 4 && diff > -4
-          ) {
-          $('#result-' + log.id).text('LOGGED').addClass('success');
+  //Check if entry was already logged based on user id;
+  var usedIds = [];
+  var i       = 0;
+  chrome.storage.sync.get({
+    jiraUserEmail: ''
+  }, function(items) {
+    var jiraUserEmail = items.jiraUserEmail;
+    if( jiraUserEmail == '' ){
+      addError( 'No Jira user e-mail found.' );
+    }else{
+      logs.forEach(function (log) {
+        //Still need to add a fallback here;
+        $.get(config.url + '/rest/api/latest/issue/' + log.issue + '/worklog',
+          function success(response) {
+            var worklogs = response.worklogs;
+            worklogs.forEach(function (worklog) {
+              if( usedIds.indexOf( worklog.id ) == -1 ){
+                var diff = Math.floor(worklog.timeSpentSeconds / 60) - Math.floor(log.timeSpentInt / 60);
+                if(
+                  // if user matches
+                  worklog.author.emailAddress == jiraUserEmail &&
+                  // if date and month matches
+                  worklog.started.toDDMM() === log.started.toDDMM() &&
+                  // if duration is within 4 minutes because JIRA is rounding worklog minutes :facepalm:
+                  diff < 4 && diff > -4
+                ){
+                  $('#result-' + log.id).text('LOGGED').addClass('success');
+                  $('#result-' + log.id).removeClass('warning');
+                  $('#result-' + log.id).removeClass('danger');
+                  $('#input-' + log.id).removeAttr('checked');
+                  $('#input-' + log.id).attr('data-log-submit', true);
+                  $('#tr-entry-' + log.id).addClass('already-logged');
+                  log.submit = false;
+                  usedIds[i] = worklog.id;
+                  i++;
+                }
+              }
+            })
+        }).fail(function() {
+          $('#result-' + log.id).text('ERROR').addClass('danger');
           $('#result-' + log.id).removeClass('warning');
-          $('#result-' + log.id).removeClass('danger');
+          $('#result-' + log.id).removeClass('success');
           $('#input-' + log.id).removeAttr('checked');
-          $('#input-' + log.id).attr('data-log-submit', true);
-          $('#tr-entry-' + log.id).addClass('already-logged');
-          log.submit = false;
-        }
-      })
-    }).fail(function() {
-      $('#result-' + log.id).text('ERROR').addClass('danger');
-      $('#result-' + log.id).removeClass('warning');
-      $('#result-' + log.id).removeClass('success');
-      $('#input-' + log.id).removeAttr('checked');
-      $('#input-' + log.id).attr('data-log-submit', false);
-      addError( 'Error loading logs from jira, please try again later.' );
-    });
+          $('#input-' + log.id).attr('data-log-submit', false);
+          addError( 'Error loading logs from jira, please try again later.' );
+        });
+      });
+    }
+  console.log(usedIds);
   });
 }

@@ -20,20 +20,15 @@
         </div>
       </div>
     </div>
-    <div id="main-content">
+    <div id="main-content-options">
       <!-- Header -->
       <div id="main-header">
         <div id="main-header-logo"><img src="/oe_avatar.png" height="32"/></div>
         <div id="main-header-text"><h2>Toggl 2 Jira (Settings)</h2></div>
       </div>
       <div class="line"><div id="status"></div></div>
+      <div class="line"><h1 class="header">Extention</h1></div>
       <div class="options-panel">
-        <div class="fields-wrapper">
-          <div class="field field-full">
-            <label class="options">Toggl API Key</label>
-            <input id="toggl-api-key" style="width: 100%;"/>
-          </div>
-        </div>
         <div class="fields-wrapper">
           <div class="field field-full">
             <label class="options">Default Log Work comment Will be added to the description using " - " as separetor.</label>
@@ -56,9 +51,27 @@
             <label><input type="checkbox" id="show-day-total"/><b>&nbsp;Sum total hours on each day</b></label>
           </div>
         </div>
-        <div class="line"><button id="save">Save Changes</button></div>
-        <div class="line version"><span>V: 18.2.1 <i>(2018-10-22)</i><span></div>
       </div>
+      <div class="line header"><h1 class="header">Toggle</h1></div>
+      <div class="options-panel">
+        <div class="fields-wrapper">
+          <div class="field field-full">
+            <label class="options">Toggl API Key</label>
+            <input id="toggl-api-key" style="width: 100%;"/>
+          </div>
+        </div>
+      </div>
+      <div class="line header"><h1 class="header">Jira</h1></div>
+      <div class="options-panel">
+        <div class="fields-wrapper">
+          <div class="field field-full">
+            <label class="options">User E-mail</label>
+            <input id="jira-user-email" style="width: 100%;"/>
+          </div>
+        </div>
+      </div>
+      <div class="line"><button id="save">Save Changes</button></div>
+      <div class="line version"><span>V: 18.3.2 <i>(2018-11-09)</i><span></div>
     </div>
     <div class="hide">
       <label class="hide"><input type="checkbox" id="merge-entries"/>Merge Toggl Time Entries by Ticket.</label>

@@ -4,6 +4,7 @@ function saveOptions() {
     var togglApyKey    = document.getElementById('toggl-api-key').value;
     var comment        = document.getElementById('log-comment').value;
     var commentReplace = document.getElementById('log-comment-replace').value;
+    var jiraUserEmail  = document.getElementById('jira-user-email').value;
     var merge          = document.getElementById('merge-entries').checked;
     var jumpToToday    = document.getElementById('jump-to-today').checked;
     var showDayTotal   = document.getElementById('show-day-total').checked;
@@ -12,6 +13,7 @@ function saveOptions() {
         togglApyKey: togglApyKey,
         comment: comment,
         commentReplace: commentReplace,
+        jiraUserEmail: jiraUserEmail,
         merge: merge,
         jumpToToday: jumpToToday,
         showDayTotal: showDayTotal
@@ -35,6 +37,7 @@ function restoreOptions() {
         togglApyKey: '',
         comment: '',
         commentReplace: '',
+        jiraUserEmail: '',
         merge: false,
         jumpToToday: false,
         showDayTotal: true
@@ -43,6 +46,7 @@ function restoreOptions() {
         document.getElementById('toggl-api-key').value       = items.togglApyKey;
         document.getElementById('log-comment').value         = items.comment;
         document.getElementById('log-comment-replace').value = items.commentReplace;
+        document.getElementById('jira-user-email').value     = items.jiraUserEmail;
         document.getElementById('merge-entries').checked     = items.merge;
         document.getElementById('jump-to-today').checked     = items.jumpToToday;
         document.getElementById('show-day-total').checked    = items.showDayTotal;
